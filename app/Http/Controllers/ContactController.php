@@ -23,6 +23,11 @@ class ContactController extends Controller
                   ->orWhere('phone', 'like', "%$search%");
         }
 
+        // Filter by group
+        if ($request->has('group_id')) {
+            $query->where('group_id', $request->group_id);
+        }
+
         return response()->json($query->with('group')->get());
     }
 
@@ -60,6 +65,12 @@ class ContactController extends Controller
         return response()->json($contact);
     }
 
+    // Show single kontak
+    public function show(Contact $contact)
+    {
+        return response()->json($contact->load('group'));
+    }
+
     // Hapus kontak
     public function destroy(Contact $contact)
     {
@@ -76,8 +87,8 @@ class ContactController extends Controller
     // Import kontak dari Excel
     public function import(Request $request)
     {
-        $request->validate(['file' => 'required|mimes:xlsx,csv']);
-        Excel::import(new ContactsImport, $request->file('file'));
+    $request->validate(['file' => 'required|mimes:xlsx,csv,txt']);
+    Excel::import(new ContactsImport, $request->file('file'));
         return response()->json(['message' => 'Import sukses']);
     }
 }

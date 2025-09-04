@@ -19,7 +19,8 @@ return new class extends Migration
         $table->string('company')->nullable();
         $table->string('position')->nullable();
         $table->text('notes')->nullable();
-        $table->foreignId('group_id')->nullable()->constrained('groups')->nullOnDelete();
+    // keep group_id as nullable unsignedBigInteger to avoid migration order issues
+    $table->unsignedBigInteger('group_id')->nullable();
         $table->timestamps();
     });
 }
