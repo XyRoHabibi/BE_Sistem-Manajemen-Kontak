@@ -1,0 +1,10 @@
+<?php
+
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\GroupController;
+
+Route::apiResource('contacts', ContactController::class);
+Route::apiResource('groups', GroupController::class);
+
+Route::get('contacts-export', [ContactController::class, 'export']);
+Route::post('contacts-import', [ContactController::class, 'import']);
